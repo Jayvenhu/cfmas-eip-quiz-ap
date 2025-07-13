@@ -6,7 +6,7 @@ import gspread # Make sure this is in your requirements.txt
 
 # --- Configuration ---
 # Replace with your Google Sheet ID and the exact name of the worksheet
-GOOGLE_SHEET_ID = "YOUR_SHEET_ID_HERE" # <--- IMPORTANT: Update this with your Sheet ID
+GOOGLE_SHEET_ID = "1mLse9BqCBz9Jw5jqBSChb0a-OwDKyso-mCkauFrl22E" # <--- YOUR SHEET ID IS HERE!
 WORKSHEET_NAME = "Sheet1" # <--- IMPORTANT: Update this if your sheet tab is named differently
 
 # --- Data Loading (Cached for performance and Sheet Interaction) ---
