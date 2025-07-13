@@ -13,7 +13,8 @@ WORKSHEET_NAME = "Sheet1" # <--- IMPORTANT: Update this if your sheet tab is nam
 @st.cache_data(ttl=600) # Cache for 10 minutes to avoid re-reading sheet too often
 def load_data_from_gsheets():
     """Loads the data from the specified Google Sheet."""
-    conn = st.connection("gsheets", type="pandas")
+    # Corrected line: Removed type="pandas"
+    conn = st.connection("gsheets")
     try:
         df = conn.read(spreadsheet=GOOGLE_SHEET_ID, worksheet=WORKSHEET_NAME, ttl=5)
         # Ensure 'Attempted', 'Incorrect attempt', and 'Question No.' columns are numeric, fill NaN with 0
