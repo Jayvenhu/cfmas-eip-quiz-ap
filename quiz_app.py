@@ -13,8 +13,7 @@ WORKSHEET_NAME = "Sheet1" # <--- IMPORTANT: Update this if your sheet tab is nam
 @st.cache_data(ttl=600) # Cache for 10 minutes to avoid re-reading sheet too often
 def load_data_from_gsheets():
     """Loads the data from the specified Google Sheet."""
-    # Corrected line: Removed type="pandas"
-    conn = st.connection("gsheets")
+    conn = st.connection("gsheets") # CORRECTED: Removed type="pandas"
     try:
         df = conn.read(spreadsheet=GOOGLE_SHEET_ID, worksheet=WORKSHEET_NAME, ttl=5)
         # Ensure 'Attempted', 'Incorrect attempt', and 'Question No.' columns are numeric, fill NaN with 0
@@ -37,11 +36,14 @@ def update_gsheet_cell(row_index, col_name, value):
     # This function uses gspread directly as st.connection().write() for arbitrary cell updates is not straightforward.
     try:
         # Authenticate using st.secrets
-        gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+        # This part of the code still directly uses the 'gcp_service_account' secret.
+        # Ensure your Streamlit Cloud secrets are set up correctly as per our last discussion:
+        # with [connections.gsheets] header and then the service account JSON, and spreadsheet_id.
+        gc = gspread.service_account_from_dict(st.secrets["connections"]["gsheets"]) # Accessing nested secret
         sh = gc.open_by_id(GOOGLE_SHEET_ID)
         worksheet = sh.worksheet(WORKSHEET_NAME)
     except Exception as e:
-        st.error(f"Error authenticating with Google Sheets or opening sheet: {e}. Check your `gcp_service_account` secret and Sheet ID/Name.")
+        st.error(f"Error authenticating with Google Sheets or opening sheet for update: {e}. Check your Streamlit Cloud secrets configuration.")
         return # Exit if authentication fails
 
     # Find column index (1-based)
